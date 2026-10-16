@@ -1,0 +1,6 @@
+{
+  "name": "Nalam Medical Clinic - Northern Sri Lanka",
+  "description": "Modern, compassionate healthcare website for the Tamil-speaking community in Northern Sri Lanka (Jaffna), featuring bilingual support, qualified Tamil doctor profiles, online appointment booking, and clinic information.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
