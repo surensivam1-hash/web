@@ -1,38 +1,26 @@
-export type Language = 'en' | 'ta';
-
 export interface Doctor {
   id: string;
-  nameEn: string;
-  nameTa: string;
-  specializationEn: string;
-  specializationTa: string;
+  name: string;
+  specialization: string;
   qualifications: string;
-  experienceEn: string;
-  experienceTa: string;
-  consultationDaysEn: string;
-  consultationDaysTa: string;
-  languagesEn: string;
-  languagesTa: string;
+  experience: string;
+  consultationDays: string;
+  languages: string;
   photoUrl: string;
-  bioEn: string;
-  bioTa: string;
+  bio: string;
 }
 
 export interface MedicalService {
   id: string;
   iconName: string;
-  titleEn: string;
-  titleTa: string;
-  descriptionEn: string;
-  descriptionTa: string;
-  highlightsEn: string[];
-  highlightsTa: string[];
+  title: string;
+  description: string;
+  highlights: string[];
 }
 
 export interface TimeSlot {
   id: string;
-  timeEn: string;
-  timeTa: string;
+  time: string;
   period: 'morning' | 'evening';
   available: boolean;
 }
@@ -58,24 +46,15 @@ export interface ConfirmedBooking {
 }
 
 export interface ClinicInfo {
-  nameEn: string;
-  nameTa: string;
-  taglineEn: string;
-  taglineTa: string;
-  addressEn: string;
-  addressTa: string;
+  name: string;
+  tagline: string;
+  address: string;
   phonePrimary: string;
   phoneSecondary: string;
   whatsappNumber: string;
   whatsappDisplay: string;
   email: string;
-  hoursEn: {
-    weekdays: string;
-    saturday: string;
-    sunday: string;
-    emergencyNote: string;
-  };
-  hoursTa: {
+  hours: {
     weekdays: string;
     saturday: string;
     sunday: string;
@@ -85,18 +64,14 @@ export interface ClinicInfo {
 
 export interface FaqItem {
   id: string;
-  questionEn: string;
-  questionTa: string;
-  answerEn: string;
-  answerTa: string;
+  question: string;
+  answer: string;
   category: 'appointments' | 'lab' | 'languages' | 'location';
 }
 
 export interface ClinicAmenity {
   id: string;
-  titleEn: string;
-  titleTa: string;
-  descriptionEn: string;
-  descriptionTa: string;
+  title: string;
+  description: string;
   iconName: string;
 }

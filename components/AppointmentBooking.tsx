@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Doctor, Language, ConfirmedBooking } from '@/lib/types';
-import { DOCTORS_DATA, AVAILABLE_SLOTS, TRANSLATIONS, CLINIC_INFO } from '@/lib/data';
+import { ConfirmedBooking } from '@/lib/types';
+import { DOCTORS_DATA, AVAILABLE_SLOTS, CLINIC_INFO } from '@/lib/data';
 import {
   validatePhoneNumber,
   validateAppointmentDate,
@@ -25,28 +25,23 @@ import {
   ShieldAlert,
   Loader2,
   Stethoscope,
-  MapPin,
   Sparkles,
-  QrCode,
   Check,
   Copy,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 interface AppointmentBookingProps {
-  language: Language;
   selectedDoctorId: string;
   onDoctorChange: (id: string) => void;
   prefillMessage?: string;
 }
 
 export function AppointmentBooking({
-  language,
   selectedDoctorId,
   onDoctorChange,
   prefillMessage,
 }: AppointmentBookingProps) {
-  const t = TRANSLATIONS[language];
   const todayStr = getTodayDateString();
 
   // Form states
@@ -84,9 +79,9 @@ export function AppointmentBooking({
     const newErrors: Record<string, string> = {};
 
     if (!patientName.trim()) {
-      newErrors.patientName = language === 'ta' ? 'நோயாளி பெயர் அவசியமானது.' : 'Patient full name is required.';
+      newErrors.patientName = 'Patient full name is required.';
     } else if (patientName.trim().length < 2) {
-      newErrors.patientName = language === 'ta' ? 'குறைந்தது 2 எழுத்துக்கள் தேவை.' : 'Name must be at least 2 characters.';
+      newErrors.patientName = 'Name must be at least 2 characters.';
     }
 
     const phoneValidation = validatePhoneNumber(phoneNumber);
@@ -95,7 +90,7 @@ export function AppointmentBooking({
     }
 
     if (!selectedDoctorId) {
-      newErrors.doctorId = language === 'ta' ? 'தயவுசெய்து ஒரு மருத்துவரைத் தெரிவு செய்யவும்.' : 'Please select a doctor.';
+      newErrors.doctorId = 'Please select a doctor.';
     }
 
     const dateValidation = validateAppointmentDate(appointmentDate);
@@ -104,7 +99,7 @@ export function AppointmentBooking({
     }
 
     if (!selectedSlot) {
-      newErrors.slot = language === 'ta' ? 'ஒரு நேரத்தைத் தெரிவு செய்யவும்.' : 'Please choose an available time slot.';
+      newErrors.slot = 'Please choose an available time slot.';
     }
 
     setErrors(newErrors);
@@ -122,15 +117,13 @@ export function AppointmentBooking({
 
     // Simulate instant scheduling desk verification
     setTimeout(() => {
-      const slotLabel = language === 'ta' ? selectedSlotObj.timeTa : selectedSlotObj.timeEn;
-
       const booking: ConfirmedBooking = {
         referenceId: generateBookingReference('NLM'),
         patientName: patientName.trim(),
         phoneNumber: phoneNumber.trim(),
         doctor: selectedDoctor,
         appointmentDate,
-        timeSlot: slotLabel,
+        timeSlot: selectedSlotObj.time,
         message: message.trim() || undefined,
         bookingTimestamp: new Date().toLocaleString(),
       };
@@ -152,11 +145,10 @@ export function AppointmentBooking({
 
   const handleDownloadCalendar = () => {
     if (!confirmedBooking) return;
-    const doctorName = language === 'ta' ? confirmedBooking.doctor.nameTa : confirmedBooking.doctor.nameEn;
     const content = generateIcsCalendarContent({
-      title: `Clinic Consultation with ${doctorName} (Demo)`,
+      title: `Clinic Consultation with ${confirmedBooking.doctor.name} (Demo)`,
       description: `Appointment reference: ${confirmedBooking.referenceId}. Demo booking at Nalam Health Clinic Jaffna. Patient: ${confirmedBooking.patientName}. Contact: ${CLINIC_INFO.phonePrimary}. Note: Simulated demonstration.`,
-      location: CLINIC_INFO.addressEn,
+      location: CLINIC_INFO.address,
       dateStr: confirmedBooking.appointmentDate,
       timeSlotStr: confirmedBooking.timeSlot,
     });
@@ -184,13 +176,13 @@ export function AppointmentBooking({
         <div className="max-w-3xl mb-10">
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-700 mb-2.5">
             <span className="w-2 h-2 rounded-full bg-teal-600" />
-            <span>{t.bookingHeading}</span>
+            <span>Online Appointment</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight text-balance">
-            {t.bookingTitle}
+            Schedule Your Clinic Visit
           </h2>
           <p className="mt-3 text-base sm:text-lg text-slate-600">
-            {t.bookingSubtitle}
+            Select your preferred doctor, date, and convenient consultation slot. Instant demonstration confirmation provided.
           </p>
         </div>
 
@@ -198,8 +190,8 @@ export function AppointmentBooking({
         <div className="mb-10 p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-amber-950 flex items-start gap-3.5 text-xs sm:text-sm shadow-2xs">
           <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
           <div className="space-y-0.5 leading-relaxed">
-            <span className="font-extrabold">{language === 'ta' ? 'மாதிரி செயல்முறை அறிவிப்பு:' : 'Frontend Prototype Notice:'}</span>{' '}
-            <span>{t.bookingDisclaimerNotice}</span>
+            <span className="font-extrabold">Frontend Prototype Notice:</span>{' '}
+            <span>This is a frontend demonstration. Demo appointments are simulated and are not stored in a database or sent to the real clinic desk.</span>
           </div>
         </div>
 
@@ -220,10 +212,10 @@ export function AppointmentBooking({
                 </div>
                 <div>
                   <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                    {t.successTitle}
+                    Appointment Request Submitted (Demo)
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                    {t.successSubtitle}
+                    Here is your demonstration consultation slip. Please review your details below.
                   </p>
                 </div>
               </div>
@@ -231,7 +223,7 @@ export function AppointmentBooking({
               {/* Reference Badge with Copy */}
               <div className="text-right shrink-0">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
-                  {t.successRef}
+                  Reference Number
                 </span>
                 <div className="flex items-center gap-1.5 mt-0.5 justify-end">
                   <span className="font-mono text-base sm:text-lg font-extrabold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200">
@@ -241,7 +233,7 @@ export function AppointmentBooking({
                     type="button"
                     onClick={handleCopyReference}
                     className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
-                    title={language === 'ta' ? 'குறியீட்டை பிரதி செய்க' : 'Copy Reference Code'}
+                    title="Copy Reference Code"
                     aria-label="Copy Reference Code"
                   >
                     {copiedRef ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
@@ -254,19 +246,19 @@ export function AppointmentBooking({
             <div className="py-6 grid grid-cols-1 sm:grid-cols-2 gap-6 border-b border-slate-100 text-sm">
               <div>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
-                  {t.successDoctor}
+                  Consulting Doctor
                 </span>
                 <p className="text-base font-extrabold text-slate-900">
-                  {language === 'ta' ? confirmedBooking.doctor.nameTa : confirmedBooking.doctor.nameEn}
+                  {confirmedBooking.doctor.name}
                 </p>
                 <p className="text-xs text-teal-700 font-semibold">
-                  {language === 'ta' ? confirmedBooking.doctor.specializationTa : confirmedBooking.doctor.specializationEn}
+                  {confirmedBooking.doctor.specialization}
                 </p>
               </div>
 
               <div>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
-                  {t.successDate}
+                  Date & Time
                 </span>
                 <p className="text-base font-extrabold text-slate-900">
                   {confirmedBooking.appointmentDate}
@@ -278,7 +270,7 @@ export function AppointmentBooking({
 
               <div>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
-                  {t.successPatient}
+                  Patient Name
                 </span>
                 <p className="font-extrabold text-slate-900">
                   {confirmedBooking.patientName}
@@ -287,7 +279,7 @@ export function AppointmentBooking({
 
               <div>
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
-                  {t.successContact}
+                  Contact Phone
                 </span>
                 <p className="font-mono font-bold text-slate-900">
                   {confirmedBooking.phoneNumber}
@@ -297,7 +289,7 @@ export function AppointmentBooking({
               {confirmedBooking.message && (
                 <div className="sm:col-span-2">
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
-                    {language === 'ta' ? 'குறிப்பு' : 'Patient Message / Reason'}
+                    Patient Message / Reason
                   </span>
                   <p className="text-slate-700 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-xs sm:text-sm">
                     {confirmedBooking.message}
@@ -310,11 +302,11 @@ export function AppointmentBooking({
             <div className="my-6 p-4 rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 text-xs sm:text-sm flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-sky-700 shrink-0 mt-0.5" />
               <p className="leading-relaxed">
-                {t.successNote}
+                Remember: This is a prototype preview. No real appointment has been recorded with a physical clinic. Please contact the clinic directly via phone or WhatsApp for real clinical visits.
               </p>
             </div>
 
-            {/* Actions: Download .ics, Print, Book Another */}
+            {/* Actions */}
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <button
@@ -324,7 +316,7 @@ export function AppointmentBooking({
                   title="Download iCalendar file"
                 >
                   <Download className="w-4 h-4 text-slate-600" />
-                  <span>{t.successAddToCalendar}</span>
+                  <span>Download Calendar (.ics)</span>
                 </button>
 
                 <button
@@ -334,7 +326,7 @@ export function AppointmentBooking({
                   title="Print this consultation slip"
                 >
                   <Printer className="w-4 h-4 text-slate-600" />
-                  <span>{t.successPrintSlip}</span>
+                  <span>Print Demo Slip</span>
                 </button>
               </div>
 
@@ -344,7 +336,7 @@ export function AppointmentBooking({
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-teal-700 hover:bg-teal-800 rounded-xl shadow-xs transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />
-                <span>{t.successBookAnother}</span>
+                <span>Book Another Appointment</span>
               </button>
             </div>
           </motion.div>
@@ -361,7 +353,7 @@ export function AppointmentBooking({
                   {/* Full Name */}
                   <div>
                     <label htmlFor="patientName" className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
-                      {t.formFullName} <span className="text-rose-500">*</span>
+                      Patient Full Name <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -377,7 +369,7 @@ export function AppointmentBooking({
                             setErrors((prev) => ({ ...prev, patientName: '' }));
                           }
                         }}
-                        placeholder={t.formFullNamePlaceholder}
+                        placeholder="e.g. S. Vijayaraj"
                         className={`block w-full pl-10 pr-4 py-3 text-sm rounded-xl border ${
                           errors.patientName ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white'
                         } text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors shadow-2xs`}
@@ -395,7 +387,7 @@ export function AppointmentBooking({
                   {/* Phone Number */}
                   <div>
                     <label htmlFor="phoneNumber" className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
-                      {t.formPhone} <span className="text-rose-500">*</span>
+                      Phone Number <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -411,7 +403,7 @@ export function AppointmentBooking({
                             setErrors((prev) => ({ ...prev, phoneNumber: '' }));
                           }
                         }}
-                        placeholder={t.formPhonePlaceholder}
+                        placeholder="e.g. 077 123 4567 or +94 77 123 4567"
                         className={`block w-full pl-10 pr-4 py-3 text-sm rounded-xl border ${
                           errors.phoneNumber ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white'
                         } text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors shadow-2xs`}
@@ -425,7 +417,7 @@ export function AppointmentBooking({
                       </p>
                     ) : (
                       <p className="mt-1.5 text-[11px] text-slate-500">
-                        {t.formPhoneHint}
+                        Sri Lankan mobile format (e.g., 07X XXX XXXX)
                       </p>
                     )}
                   </div>
@@ -435,10 +427,10 @@ export function AppointmentBooking({
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label htmlFor="doctorSelect" className="block text-xs font-extrabold uppercase tracking-wider text-slate-700">
-                      {t.formSelectDoctor} <span className="text-rose-500">*</span>
+                      Select Doctor & Specialty <span className="text-rose-500">*</span>
                     </label>
                     <span className="text-[11px] text-teal-700 font-semibold hidden sm:inline">
-                      {language === 'ta' ? '4 நிபுணர்கள் உள்ளனர்' : '4 Specialists available'}
+                      4 Specialists available
                     </span>
                   </div>
 
@@ -465,7 +457,7 @@ export function AppointmentBooking({
                           <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-slate-200">
                             <Image
                               src={doc.photoUrl}
-                              alt={doc.nameEn}
+                              alt={doc.name}
                               fill
                               className="object-cover"
                               sizes="32px"
@@ -474,10 +466,10 @@ export function AppointmentBooking({
                           </div>
                           <div className="min-w-0">
                             <p className="text-[11px] font-bold text-slate-900 truncate leading-tight">
-                              {language === 'ta' ? doc.nameTa.split(' ')[1] || doc.nameTa : doc.nameEn.split(' ')[1] || doc.nameEn}
+                              {doc.name.split(' ')[1] || doc.name}
                             </p>
                             <p className="text-[9px] text-teal-700 truncate font-semibold">
-                              {language === 'ta' ? doc.specializationTa.split(' ')[0] : doc.specializationEn.split(' ')[0]}
+                              {doc.specialization.split(' ')[0]}
                             </p>
                           </div>
                         </button>
@@ -503,10 +495,10 @@ export function AppointmentBooking({
                       } text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors shadow-2xs`}
                       required
                     >
-                      <option value="">{t.formDoctorPrompt}</option>
+                      <option value="">-- Please choose a doctor --</option>
                       {DOCTORS_DATA.map((doc) => (
                         <option key={doc.id} value={doc.id}>
-                          {language === 'ta' ? doc.nameTa : doc.nameEn} — {language === 'ta' ? doc.specializationTa : doc.specializationEn}
+                          {doc.name} — {doc.specialization}
                         </option>
                       ))}
                     </select>
@@ -519,10 +511,10 @@ export function AppointmentBooking({
                   )}
                 </div>
 
-                {/* Row 3: Appointment Date (Prevents past dates) */}
+                {/* Row 3: Appointment Date */}
                 <div>
                   <label htmlFor="appointmentDate" className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
-                    {t.formDate} <span className="text-rose-500">*</span>
+                    Appointment Date <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -556,14 +548,14 @@ export function AppointmentBooking({
                 {/* Row 4: Available Time Slots */}
                 <div>
                   <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2.5">
-                    {t.formTimeSlot} <span className="text-rose-500">*</span>
+                    Preferred Time Slot <span className="text-rose-500">*</span>
                   </label>
                   
                   {/* Morning Slots */}
                   <div className="mb-4">
                     <p className="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5 text-teal-600" />
-                      <span>{t.formMorningSlots}</span>
+                      <span>Morning Sessions</span>
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {AVAILABLE_SLOTS.filter((s) => s.period === 'morning').map((slot) => {
@@ -584,7 +576,7 @@ export function AppointmentBooking({
                                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-teal-300 hover:bg-white'
                             }`}
                           >
-                            {language === 'ta' ? slot.timeTa : slot.timeEn}
+                            {slot.time}
                           </button>
                         );
                       })}
@@ -595,7 +587,7 @@ export function AppointmentBooking({
                   <div>
                     <p className="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5 text-sky-600" />
-                      <span>{t.formEveningSlots}</span>
+                      <span>Evening Sessions</span>
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {AVAILABLE_SLOTS.filter((s) => s.period === 'evening').map((slot) => {
@@ -616,7 +608,7 @@ export function AppointmentBooking({
                                 : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-teal-300 hover:bg-white'
                             }`}
                           >
-                            {language === 'ta' ? slot.timeTa : slot.timeEn}
+                            {slot.time}
                           </button>
                         );
                       })}
@@ -634,7 +626,7 @@ export function AppointmentBooking({
                 {/* Row 5: Optional message */}
                 <div>
                   <label htmlFor="patientMessage" className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
-                    {t.formMessage}
+                    Reason for Visit or Short Message (Optional)
                   </label>
                   <div className="relative">
                     <div className="absolute top-3.5 left-3.5 pointer-events-none text-slate-400">
@@ -645,7 +637,7 @@ export function AppointmentBooking({
                       rows={3}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      placeholder={t.formMessagePlaceholder}
+                      placeholder="e.g. Routine blood pressure check, fever, child immunization review..."
                       className="block w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors shadow-2xs"
                     />
                   </div>
@@ -662,12 +654,12 @@ export function AppointmentBooking({
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>{t.formSubmitting}</span>
+                        <span>Validating & Booking Slot...</span>
                       </>
                     ) : (
                       <>
                         <Calendar className="w-5 h-5" />
-                        <span>{t.formSubmit}</span>
+                        <span>Confirm Demo Appointment</span>
                       </>
                     )}
                   </motion.button>
@@ -682,7 +674,7 @@ export function AppointmentBooking({
                 <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                   <span className="text-xs font-bold uppercase tracking-wider text-teal-800 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-teal-600" />
-                    <span>{language === 'ta' ? 'நேரலை முன்பதிவு முன்னோட்டம்' : 'Live Booking Summary'}</span>
+                    <span>Live Booking Summary</span>
                   </span>
                   <span className="text-[11px] font-semibold text-slate-400">Jaffna OPD Desk</span>
                 </div>
@@ -692,7 +684,7 @@ export function AppointmentBooking({
                   <div className="relative w-14 h-14 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                     <Image
                       src={selectedDoctor.photoUrl}
-                      alt={selectedDoctor.nameEn}
+                      alt={selectedDoctor.name}
                       fill
                       className="object-cover"
                       sizes="56px"
@@ -701,13 +693,13 @@ export function AppointmentBooking({
                   </div>
                   <div>
                     <h4 className="text-base font-extrabold text-slate-900 leading-tight">
-                      {language === 'ta' ? selectedDoctor.nameTa : selectedDoctor.nameEn}
+                      {selectedDoctor.name}
                     </h4>
                     <p className="text-xs text-teal-700 font-semibold mt-0.5">
-                      {language === 'ta' ? selectedDoctor.specializationTa : selectedDoctor.specializationEn}
+                      {selectedDoctor.specialization}
                     </p>
                     <p className="text-[11px] text-slate-500 mt-0.5">
-                      {language === 'ta' ? selectedDoctor.experienceTa : selectedDoctor.experienceEn}
+                      {selectedDoctor.experience}
                     </p>
                   </div>
                 </div>
@@ -715,24 +707,24 @@ export function AppointmentBooking({
                 {/* Selected Details List */}
                 <div className="space-y-3 pt-3 border-t border-slate-100 text-xs">
                   <div className="flex items-center justify-between py-1">
-                    <span className="text-slate-500 font-medium">{language === 'ta' ? 'திகதி:' : 'Date:'}</span>
+                    <span className="text-slate-500 font-medium">Date:</span>
                     <span className="font-bold text-slate-800 font-mono">{appointmentDate}</span>
                   </div>
 
                   <div className="flex items-center justify-between py-1">
-                    <span className="text-slate-500 font-medium">{language === 'ta' ? 'நேர இடைவெளி:' : 'Time Slot:'}</span>
+                    <span className="text-slate-500 font-medium">Time Slot:</span>
                     <span className="font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-md border border-teal-200">
-                      {language === 'ta' ? selectedSlotObj.timeTa : selectedSlotObj.timeEn}
+                      {selectedSlotObj.time}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between py-1">
-                    <span className="text-slate-500 font-medium">{language === 'ta' ? 'அமைவிடம்:' : 'Location:'}</span>
+                    <span className="text-slate-500 font-medium">Location:</span>
                     <span className="font-bold text-slate-800">Hospital Road, Jaffna</span>
                   </div>
 
                   <div className="flex items-center justify-between py-1">
-                    <span className="text-slate-500 font-medium">{language === 'ta' ? 'ஆலோசனை அறை:' : 'Consultation Desk:'}</span>
+                    <span className="text-slate-500 font-medium">Consultation Desk:</span>
                     <span className="font-bold text-slate-800">OPD Room 01 (Ground Floor)</span>
                   </div>
                 </div>
@@ -741,12 +733,10 @@ export function AppointmentBooking({
                 <div className="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-100 text-teal-900 space-y-1.5 text-xs">
                   <div className="flex items-center gap-2 font-bold">
                     <Check className="w-3.5 h-3.5 text-teal-700" />
-                    <span>{language === 'ta' ? 'தாய்மொழி வழி கனிவான கவனிப்பு' : 'Bilingual Mother-Tongue Consultation'}</span>
+                    <span>Bilingual Mother-Tongue & English Consultation</span>
                   </div>
                   <p className="text-[11px] text-teal-800 leading-relaxed">
-                    {language === 'ta'
-                      ? 'மருத்துவ விபரங்கள் மற்றும் மருந்துச் சீட்டுகள் முழுமையாகத் தமிழில் விளக்கப்படும்.'
-                      : 'Prescriptions and lifestyle advice discussed clearly in Tamil or English.'}
+                    Prescriptions and lifestyle advice discussed clearly in English or Tamil.
                   </p>
                 </div>
               </div>

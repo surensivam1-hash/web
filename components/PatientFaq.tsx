@@ -1,17 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Language, FaqItem } from '@/lib/types';
-import { CLINIC_FAQS, TRANSLATIONS } from '@/lib/data';
-import { ChevronDown, HelpCircle, Sparkles } from 'lucide-react';
+import { CLINIC_FAQS } from '@/lib/data';
+import { ChevronDown, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-interface PatientFaqProps {
-  language: Language;
-}
-
-export function PatientFaq({ language }: PatientFaqProps) {
-  const t = TRANSLATIONS[language];
+export function PatientFaq() {
   const [openFaqId, setOpenFaqId] = useState<string | null>(CLINIC_FAQS[0]?.id || null);
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
@@ -32,81 +26,44 @@ export function PatientFaq({ language }: PatientFaqProps) {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-700 mb-2.5">
             <HelpCircle className="w-4 h-4 text-teal-600" />
-            <span>{t.faqHeading}</span>
+            <span>Patient FAQ</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight text-balance">
-            {t.faqTitle}
+            Frequently Asked Questions
           </h2>
           <p className="mt-3 text-sm sm:text-base text-slate-600">
-            {t.faqSubtitle}
+            Clear answers on appointments, walk-ins, diagnostic lab delivery times, and clinic facilities in Jaffna.
           </p>
         </div>
 
         {/* Category Pills */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 mb-10">
-          <button
-            type="button"
-            onClick={() => setActiveCategory('all')}
-            className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
-              activeCategory === 'all'
-                ? 'bg-teal-700 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
-          >
-            {language === 'ta' ? 'அனைத்து வினாக்களும்' : 'All Topics'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveCategory('appointments')}
-            className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
-              activeCategory === 'appointments'
-                ? 'bg-teal-700 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
-          >
-            {language === 'ta' ? 'முன்பதிவு' : 'Appointments'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveCategory('lab')}
-            className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
-              activeCategory === 'lab'
-                ? 'bg-teal-700 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
-          >
-            {language === 'ta' ? 'ஆய்வகம் & ஈசிஜி' : 'Lab & ECG'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveCategory('languages')}
-            className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
-              activeCategory === 'languages'
-                ? 'bg-teal-700 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
-          >
-            {language === 'ta' ? 'பேசும் மொழிகள்' : 'Languages'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveCategory('location')}
-            className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
-              activeCategory === 'location'
-                ? 'bg-teal-700 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
-          >
-            {language === 'ta' ? 'அமைவிடம் & தரிப்பிடம்' : 'Location & Parking'}
-          </button>
+          {[
+            { id: 'all', label: 'All Topics' },
+            { id: 'appointments', label: 'Appointments' },
+            { id: 'lab', label: 'Lab & ECG' },
+            { id: 'languages', label: 'Languages' },
+            { id: 'location', label: 'Location & Parking' },
+          ].map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              onClick={() => setActiveCategory(cat.id)}
+              className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
+                activeCategory === cat.id
+                  ? 'bg-teal-700 text-white shadow-xs'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
 
         {/* Accordion List */}
         <div className="space-y-3.5">
           {filteredFaqs.map((faq) => {
             const isOpen = openFaqId === faq.id;
-            const question = language === 'ta' ? faq.questionTa : faq.questionEn;
-            const answer = language === 'ta' ? faq.answerTa : faq.answerEn;
 
             return (
               <div
@@ -120,7 +77,7 @@ export function PatientFaq({ language }: PatientFaqProps) {
                   aria-expanded={isOpen}
                 >
                   <span className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
-                    {question}
+                    {faq.question}
                   </span>
                   <div
                     className={`w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 transition-transform duration-200 ${
@@ -141,7 +98,7 @@ export function PatientFaq({ language }: PatientFaqProps) {
                       className="overflow-hidden"
                     >
                       <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 font-normal">
-                        {answer}
+                        {faq.answer}
                       </div>
                     </motion.div>
                   )}

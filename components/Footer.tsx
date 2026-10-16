@@ -1,18 +1,15 @@
 'use client';
 
 import React from 'react';
-import { Language } from '@/lib/types';
-import { CLINIC_INFO, TRANSLATIONS } from '@/lib/data';
+import { CLINIC_INFO } from '@/lib/data';
 import { HeartPulse, Phone, MapPin, Clock, MessageCircle, Sliders, ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
-  language: Language;
   onOpenCustomizationGuide: () => void;
   onNavigateToSection: (sectionId: string) => void;
 }
 
-export function Footer({ language, onOpenCustomizationGuide, onNavigateToSection }: FooterProps) {
-  const t = TRANSLATIONS[language];
+export function Footer({ onOpenCustomizationGuide, onNavigateToSection }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -30,16 +27,16 @@ export function Footer({ language, onOpenCustomizationGuide, onNavigateToSection
               </div>
               <div>
                 <span className="text-xl font-bold tracking-tight text-white block">
-                  {language === 'ta' ? CLINIC_INFO.nameTa : CLINIC_INFO.nameEn}
+                  {CLINIC_INFO.name}
                 </span>
                 <span className="text-xs text-slate-400">
-                  {language === 'ta' ? 'யாழ்ப்பாணம், இலங்கை' : 'Jaffna, Northern Province, Sri Lanka'}
+                  Jaffna, Northern Province, Sri Lanka
                 </span>
               </div>
             </div>
 
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
-              {t.footerTagline}
+              Caring for families across Jaffna and Northern Sri Lanka with professional bilingual medical services.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-2">
@@ -49,7 +46,7 @@ export function Footer({ language, onOpenCustomizationGuide, onNavigateToSection
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-teal-300 bg-teal-950/80 border border-teal-800 hover:bg-teal-900 rounded-lg transition-colors cursor-pointer"
               >
                 <Sliders className="w-3.5 h-3.5" />
-                <span>{t.customizationGuideBtn}</span>
+                <span>Developer Customization & Deployment Guide</span>
               </button>
             </div>
           </div>
@@ -57,76 +54,40 @@ export function Footer({ language, onOpenCustomizationGuide, onNavigateToSection
           {/* Col 2: Navigation Links */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              {language === 'ta' ? 'இணைப்புகள்' : 'Quick Navigation'}
+              Quick Navigation
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
-              <li>
-                <button
-                  type="button"
-                  onClick={() => onNavigateToSection('home')}
-                  className="hover:text-teal-400 transition-colors cursor-pointer"
-                >
-                  {t.navHome}
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => onNavigateToSection('about')}
-                  className="hover:text-teal-400 transition-colors cursor-pointer"
-                >
-                  {t.navAbout}
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => onNavigateToSection('services')}
-                  className="hover:text-teal-400 transition-colors cursor-pointer"
-                >
-                  {t.navServices}
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => onNavigateToSection('doctors')}
-                  className="hover:text-teal-400 transition-colors cursor-pointer"
-                >
-                  {t.navDoctors}
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => onNavigateToSection('appointment')}
-                  className="hover:text-teal-400 transition-colors cursor-pointer"
-                >
-                  {t.navAppointment}
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => onNavigateToSection('contact')}
-                  className="hover:text-teal-400 transition-colors cursor-pointer"
-                >
-                  {t.navContact}
-                </button>
-              </li>
+              {[
+                { id: 'home', label: 'Home' },
+                { id: 'about', label: 'About' },
+                { id: 'services', label: 'Services' },
+                { id: 'doctors', label: 'Doctors' },
+                { id: 'appointment', label: 'Appointment' },
+                { id: 'contact', label: 'Contact' },
+              ].map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => onNavigateToSection(item.id)}
+                    className="hover:text-teal-400 transition-colors cursor-pointer"
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Col 3: Contact & Emergency */}
           <div className="lg:col-span-4 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              {language === 'ta' ? 'தொடர்பு விபரங்கள்' : 'Clinic Contact & Help'}
+              Clinic Contact & Help
             </h4>
             
             <div className="space-y-2 text-xs sm:text-sm text-slate-400">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
-                <span>{language === 'ta' ? CLINIC_INFO.addressTa : CLINIC_INFO.addressEn}</span>
+                <span>{CLINIC_INFO.address}</span>
               </div>
 
               <div className="flex items-center gap-2.5">
@@ -166,11 +127,11 @@ export function Footer({ language, onOpenCustomizationGuide, onNavigateToSection
         {/* Bottom Bar: Copyright & Medical Disclaimer */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>
-            &copy; {year} {language === 'ta' ? CLINIC_INFO.nameTa : CLINIC_INFO.nameEn}. {t.footerCopyright}
+            &copy; {year} {CLINIC_INFO.name}. All rights reserved.
           </p>
 
           <p className="text-center md:text-right max-w-xl text-[11px] text-slate-500 leading-normal">
-            {t.footerLegalNotice}
+            This web prototype demonstrates a modern medical clinic interface for Northern Sri Lanka. Medical information provided here is for general health literacy and informational purposes only.
           </p>
         </div>
 

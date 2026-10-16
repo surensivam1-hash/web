@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Language, MedicalService } from '@/lib/types';
-import { SERVICES_DATA, TRANSLATIONS } from '@/lib/data';
+import { SERVICES_DATA } from '@/lib/data';
 import {
   Stethoscope,
   HeartPulse,
@@ -12,20 +11,16 @@ import {
   ShieldCheck,
   ArrowRight,
   Check,
-  Sparkles,
   Clock,
   UserCheck,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface ServicesProps {
-  language: Language;
   onBookService: (serviceName: string) => void;
 }
 
-export function Services({ language, onBookService }: ServicesProps) {
-  const t = TRANSLATIONS[language];
-
+export function Services({ onBookService }: ServicesProps) {
   const getServiceIcon = (iconName: string) => {
     switch (iconName) {
       case 'Stethoscope':
@@ -48,15 +43,15 @@ export function Services({ language, onBookService }: ServicesProps) {
   const getServiceDoctorTag = (serviceId: string) => {
     switch (serviceId) {
       case 'general-family-medicine':
-        return language === 'ta' ? 'மருத்துவர்: டாக்டர் எஸ். காண்டீபன்' : 'Lead: Dr. S. Kandeepan';
+        return 'Lead: Dr. S. Kandeepan';
       case 'cardiology-chronic-care':
-        return language === 'ta' ? 'மருத்துவர்: டாக்டர் கே. தர்மராஜா' : 'Lead: Dr. K. Tharmarajah';
+        return 'Lead: Dr. K. Tharmarajah';
       case 'pediatrics-child-health':
-        return language === 'ta' ? 'மருத்துவர்: டாக்டர் பிரியதர்ஷினி சிவகுமார்' : 'Lead: Dr. Priyadharshini';
+        return 'Lead: Dr. Priyadharshini Sivakumar';
       case 'womens-health-maternity':
-        return language === 'ta' ? 'மருத்துவர்: டாக்டர் அனன்யா பாலசுப்பிரமணியம்' : 'Lead: Dr. Ananya';
+        return 'Lead: Dr. Ananya Balasubramaniam';
       default:
-        return language === 'ta' ? 'ஆலோசனை நிபுணர் கிடைக்கும்' : 'Consultant Team Available';
+        return 'Consultant Team Available';
     }
   };
 
@@ -69,28 +64,25 @@ export function Services({ language, onBookService }: ServicesProps) {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold uppercase tracking-wider mb-3">
               <span className="w-2 h-2 rounded-full bg-teal-600 animate-pulse" />
-              <span>{t.servicesHeading}</span>
+              <span>Medical Services</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-extrabold text-slate-900 tracking-[-0.02em] leading-tight text-balance">
-              {t.servicesTitle}
+              Comprehensive Healthcare Under One Roof
             </h2>
             <p className="mt-3 text-base sm:text-lg text-slate-600 leading-relaxed">
-              {t.servicesSubtitle}
+              Specialized diagnostic and outpatient services designed to support your family’s ongoing health and well-being.
             </p>
           </div>
 
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-slate-200 text-slate-700 text-xs font-bold shadow-2xs self-start md:self-auto">
             <Clock className="w-4 h-4 text-teal-600" />
-            <span>{language === 'ta' ? 'சராசரி ஆலோசனை நேரம்: 20–30 நிமிடம்' : 'Session Duration: 20–30 mins'}</span>
+            <span>Session Duration: 20–30 mins</span>
           </div>
         </div>
 
         {/* 6-Card Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
           {SERVICES_DATA.map((service, index) => {
-            const title = language === 'ta' ? service.titleTa : service.titleEn;
-            const description = language === 'ta' ? service.descriptionTa : service.descriptionEn;
-            const highlights = language === 'ta' ? service.highlightsTa : service.highlightsEn;
             const doctorTag = getServiceDoctorTag(service.id);
 
             return (
@@ -119,15 +111,15 @@ export function Services({ language, onBookService }: ServicesProps) {
 
                   {/* Title & Description */}
                   <h3 className="text-lg font-bold text-slate-900 group-hover:text-teal-900 transition-colors mb-2.5 leading-snug">
-                    {title}
+                    {service.title}
                   </h3>
                   <p className="text-sm text-slate-600 leading-relaxed mb-6 font-normal">
-                    {description}
+                    {service.description}
                   </p>
 
                   {/* Key highlights */}
                   <div className="space-y-2.5 border-t border-slate-100 pt-5 mb-6">
-                    {highlights.map((h, i) => (
+                    {service.highlights.map((h, i) => (
                       <div key={i} className="flex items-center gap-2.5 text-xs text-slate-700">
                         <Check className="w-3.5 h-3.5 text-teal-600 shrink-0" />
                         <span>{h}</span>
@@ -139,12 +131,12 @@ export function Services({ language, onBookService }: ServicesProps) {
                 {/* Card Action */}
                 <button
                   type="button"
-                  onClick={() => onBookService(title)}
+                  onClick={() => onBookService(service.title)}
                   className="inline-flex items-center justify-between w-full pt-4 border-t border-slate-100 text-xs font-bold text-teal-700 group-hover:text-teal-900 cursor-pointer"
-                  aria-label={`Book appointment for ${title}`}
+                  aria-label={`Book appointment for ${service.title}`}
                 >
                   <span className="underline-offset-4 group-hover:underline">
-                    {language === 'ta' ? 'இந்த சேவையை முன்பதிவு செய்ய' : 'Schedule This Consultation'}
+                    Schedule This Consultation
                   </span>
                   <div className="w-7 h-7 rounded-full bg-teal-50 group-hover:bg-teal-700 group-hover:text-white flex items-center justify-center transition-colors">
                     <ArrowRight className="w-3.5 h-3.5" />

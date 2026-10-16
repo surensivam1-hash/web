@@ -1,22 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Language } from '@/lib/types';
-import { CLINIC_INFO, TRANSLATIONS } from '@/lib/data';
+import { CLINIC_INFO } from '@/lib/data';
 import { Menu, X, Phone, Calendar, HeartPulse, Clock, ShieldCheck, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface HeaderProps {
-  language: Language;
-  onLanguageChange: (lang: Language) => void;
   onNavigateToBooking: () => void;
 }
 
-export function Header({ language, onLanguageChange, onNavigateToBooking }: HeaderProps) {
+export function Header({ onNavigateToBooking }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const t = TRANSLATIONS[language];
-
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
@@ -58,7 +53,7 @@ export function Header({ language, onLanguageChange, onNavigateToBooking }: Head
           <div className="flex items-center gap-4 truncate">
             <span className="inline-flex items-center gap-1.5 text-teal-400 font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              <span>{language === 'ta' ? 'வெளிநோயாளர் பிரிவு இயங்குகிறது' : 'Outpatient Clinic Open Today'}</span>
+              <span>Outpatient Clinic Open Today</span>
             </span>
             <span className="hidden md:inline-flex items-center gap-1 text-slate-400">
               <Clock className="w-3 h-3 text-slate-400" />
@@ -73,7 +68,7 @@ export function Header({ language, onLanguageChange, onNavigateToBooking }: Head
           <div className="flex items-center gap-4 shrink-0 text-slate-400">
             <div className="hidden sm:flex items-center gap-1.5 text-rose-300">
               <ShieldCheck className="w-3.5 h-3.5 text-rose-400" />
-              <span>{language === 'ta' ? 'அவசர உதவிக்கு:' : 'National Ambulance:'}</span>
+              <span>National Ambulance:</span>
               <a href="tel:1990" className="font-bold text-white hover:text-rose-200 underline font-mono">
                 1990
               </a>
@@ -115,10 +110,10 @@ export function Header({ language, onLanguageChange, onNavigateToBooking }: Head
               </div>
               <div className="flex flex-col">
                 <span className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800 transition-colors">
-                  {language === 'ta' ? CLINIC_INFO.nameTa : CLINIC_INFO.nameEn}
+                  {CLINIC_INFO.name}
                 </span>
                 <span className="text-[11px] font-semibold text-slate-500 tracking-wide">
-                  {language === 'ta' ? 'யாழ்ப்பாணம் · Jaffna Healthcare' : 'Jaffna · Northern Sri Lanka'}
+                  Jaffna · Northern Sri Lanka
                 </span>
               </div>
             </a>
@@ -126,12 +121,12 @@ export function Header({ language, onLanguageChange, onNavigateToBooking }: Head
             {/* Desktop Navigation Links */}
             <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-semibold" aria-label="Main Navigation">
               {[
-                { id: 'home', label: t.navHome },
-                { id: 'about', label: t.navAbout },
-                { id: 'services', label: t.navServices },
-                { id: 'doctors', label: t.navDoctors },
-                { id: 'appointment', label: t.navAppointment },
-                { id: 'contact', label: t.navContact },
+                { id: 'home', label: 'Home' },
+                { id: 'about', label: 'About' },
+                { id: 'services', label: 'Services' },
+                { id: 'doctors', label: 'Doctors' },
+                { id: 'appointment', label: 'Appointment' },
+                { id: 'contact', label: 'Contact' },
               ].map((item) => {
                 const isActive = activeSection === item.id;
                 return (
@@ -153,34 +148,6 @@ export function Header({ language, onLanguageChange, onNavigateToBooking }: Head
 
             {/* Right Action Zone */}
             <div className="flex items-center gap-3 shrink-0">
-              {/* Language Switcher */}
-              <div className="flex items-center bg-slate-100 rounded-lg p-1 border border-slate-200/90 shadow-2xs">
-                <button
-                  type="button"
-                  onClick={() => onLanguageChange('en')}
-                  className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
-                    language === 'en'
-                      ? 'bg-white text-slate-900 shadow-xs'
-                      : 'text-slate-500 hover:text-slate-900'
-                  }`}
-                  aria-label="Switch to English language"
-                >
-                  EN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onLanguageChange('ta')}
-                  className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
-                    language === 'ta'
-                      ? 'bg-white text-teal-800 shadow-xs'
-                      : 'text-slate-500 hover:text-slate-900'
-                  }`}
-                  aria-label="தமிழுக்கு மாற்றவும் (Switch to Tamil)"
-                >
-                  தமிழ்
-                </button>
-              </div>
-
               {/* Primary Action Button: Book Appointment */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -190,8 +157,8 @@ export function Header({ language, onLanguageChange, onNavigateToBooking }: Head
                 className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-teal-700 to-sky-700 hover:from-teal-800 hover:to-sky-800 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-teal-600"
               >
                 <Calendar className="w-4 h-4" />
-                <span className="hidden sm:inline">{t.bookAppointmentBtn}</span>
-                <span className="sm:hidden">{language === 'ta' ? 'முன்பதிவு' : 'Book'}</span>
+                <span className="hidden sm:inline">Book Appointment</span>
+                <span className="sm:hidden">Book</span>
               </motion.button>
 
               {/* Mobile Menu Button */}
@@ -217,48 +184,23 @@ export function Header({ language, onLanguageChange, onNavigateToBooking }: Head
                 transition={{ duration: 0.2 }}
                 className="lg:hidden border-t border-slate-200 mt-3 pt-3 pb-2 space-y-1 overflow-hidden"
               >
-                <a
-                  href="#home"
-                  onClick={(e) => handleNavClick(e, 'home')}
-                  className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-900 transition-colors"
-                >
-                  {t.navHome}
-                </a>
-                <a
-                  href="#about"
-                  onClick={(e) => handleNavClick(e, 'about')}
-                  className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-900 transition-colors"
-                >
-                  {t.navAbout}
-                </a>
-                <a
-                  href="#services"
-                  onClick={(e) => handleNavClick(e, 'services')}
-                  className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-900 transition-colors"
-                >
-                  {t.navServices}
-                </a>
-                <a
-                  href="#doctors"
-                  onClick={(e) => handleNavClick(e, 'doctors')}
-                  className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-900 transition-colors"
-                >
-                  {t.navDoctors}
-                </a>
-                <a
-                  href="#appointment"
-                  onClick={(e) => handleNavClick(e, 'appointment')}
-                  className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-900 transition-colors"
-                >
-                  {t.navAppointment}
-                </a>
-                <a
-                  href="#contact"
-                  onClick={(e) => handleNavClick(e, 'contact')}
-                  className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-900 transition-colors"
-                >
-                  {t.navContact}
-                </a>
+                {[
+                  { id: 'home', label: 'Home' },
+                  { id: 'about', label: 'About' },
+                  { id: 'services', label: 'Services' },
+                  { id: 'doctors', label: 'Doctors' },
+                  { id: 'appointment', label: 'Appointment' },
+                  { id: 'contact', label: 'Contact' },
+                ].map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    onClick={(e) => handleNavClick(e, item.id)}
+                    className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-900 transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                ))}
 
                 <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
                   <a

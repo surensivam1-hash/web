@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Language } from '@/lib/types';
 import { DOCTORS_DATA } from '@/lib/data';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
@@ -16,7 +15,6 @@ import { Footer } from '@/components/Footer';
 import { CustomizationModal } from '@/components/CustomizationModal';
 
 export default function Home() {
-  const [language, setLanguage] = useState<Language>('en');
   const [selectedDoctorId, setSelectedDoctorId] = useState<string>(DOCTORS_DATA[0]?.id || '');
   const [prefillMessage, setPrefillMessage] = useState<string>('');
   const [customizationModalOpen, setCustomizationModalOpen] = useState<boolean>(false);
@@ -39,11 +37,7 @@ export default function Home() {
   };
 
   const handleBookService = (serviceName: string) => {
-    setPrefillMessage(
-      language === 'ta'
-        ? `ஆலோசனை சேவை: ${serviceName}`
-        : `Interested in: ${serviceName} consultation`
-    );
+    setPrefillMessage(`Interested in: ${serviceName} consultation`);
     scrollToSection('appointment');
   };
 
@@ -51,55 +45,48 @@ export default function Home() {
     <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-teal-100 selection:text-teal-900">
       {/* 1. Sticky Navigation Header */}
       <Header
-        language={language}
-        onLanguageChange={setLanguage}
         onNavigateToBooking={() => scrollToSection('appointment')}
       />
 
       <main className="flex-1">
         {/* 2. Hero Section */}
         <Hero
-          language={language}
           onBookClick={() => scrollToSection('appointment')}
           onExploreServicesClick={() => scrollToSection('services')}
         />
 
         {/* 3. About the Clinic Section */}
-        <About language={language} />
+        <About />
 
         {/* 4. Medical Services Section */}
         <Services
-          language={language}
           onBookService={handleBookService}
         />
 
         {/* 5. Clinical Amenities & Facilities Section */}
-        <Facilities language={language} />
+        <Facilities />
 
-        {/* 6. Tamil Doctors Section */}
+        {/* 6. Doctors Section */}
         <Doctors
-          language={language}
           onSelectDoctor={handleSelectDoctor}
         />
 
         {/* 7. Appointment Booking Section */}
         <AppointmentBooking
-          language={language}
           selectedDoctorId={selectedDoctorId}
           onDoctorChange={setSelectedDoctorId}
           prefillMessage={prefillMessage}
         />
 
         {/* 8. Patient FAQ Section */}
-        <PatientFaq language={language} />
+        <PatientFaq />
 
         {/* 9. Contact Section */}
-        <Contact language={language} />
+        <Contact />
       </main>
 
       {/* 10. Footer */}
       <Footer
-        language={language}
         onOpenCustomizationGuide={() => setCustomizationModalOpen(true)}
         onNavigateToSection={scrollToSection}
       />
