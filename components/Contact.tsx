@@ -97,17 +97,17 @@ export function Contact() {
           <div className="lg:col-span-7 space-y-6">
             
             {/* Address Card */}
-            <div className="p-6 sm:p-7 rounded-3xl bg-slate-50/80 border border-slate-200/80 space-y-4">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-start gap-4">
+            <div className="p-5 sm:p-7 rounded-3xl bg-slate-50/80 border border-slate-200/80">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                <div className="flex items-start gap-3.5 sm:gap-4 flex-1 min-w-0">
                   <div className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0 mt-0.5">
                     <MapPin className="w-6 h-6" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-teal-800">
                       Clinic Location
                     </h4>
-                    <p className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
+                    <p className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5 break-words">
                       {address}
                     </p>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
@@ -122,7 +122,7 @@ export function Contact() {
                   href={googleMapsDirectionsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-teal-800 hover:text-teal-900 bg-white border border-teal-200/90 rounded-xl hover:bg-teal-50 transition-colors shadow-2xs"
+                  className="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold text-teal-800 hover:text-teal-900 bg-white border border-teal-200/90 rounded-xl hover:bg-teal-50 transition-colors shadow-2xs self-start sm:self-auto w-full sm:w-auto"
                 >
                   <Navigation className="w-3.5 h-3.5 text-teal-600" />
                   <span>Get Directions (Jaffna)</span>
@@ -134,23 +134,23 @@ export function Contact() {
             {/* Direct Phone & WhatsApp Strip */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Telephone */}
-              <div className="p-6 rounded-3xl bg-slate-50/80 border border-slate-200/80 space-y-2.5">
+              <div className="p-5 sm:p-6 rounded-3xl bg-slate-50/80 border border-slate-200/80 space-y-2.5 min-w-0">
                 <div className="flex items-center gap-2.5 text-sky-800">
-                  <Phone className="w-5 h-5" />
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                  <Phone className="w-5 h-5 shrink-0" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 truncate">
                     Phone & Inquiries
                   </span>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-1 min-w-0">
                   <a
                     href={`tel:${CLINIC_INFO.phonePrimary.replace(/\s+/g, '')}`}
-                    className="block text-lg font-extrabold text-slate-900 hover:text-teal-700 transition-colors font-mono"
+                    className="block text-base sm:text-lg font-extrabold text-slate-900 hover:text-teal-700 transition-colors font-mono tracking-tight truncate"
                   >
                     {CLINIC_INFO.phonePrimary}
                   </a>
                   <a
                     href={`tel:${CLINIC_INFO.phoneSecondary.replace(/\s+/g, '')}`}
-                    className="block text-xs font-semibold text-slate-600 hover:text-teal-700 transition-colors font-mono"
+                    className="block text-xs font-semibold text-slate-600 hover:text-teal-700 transition-colors font-mono truncate"
                   >
                     {CLINIC_INFO.phoneSecondary}
                   </a>

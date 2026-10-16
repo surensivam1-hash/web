@@ -22,7 +22,7 @@ import {
   Download,
   Printer,
   RotateCcw,
-  ShieldAlert,
+
   Loader2,
   Stethoscope,
   Sparkles,
@@ -186,14 +186,7 @@ export function AppointmentBooking({
           </p>
         </div>
 
-        {/* Demo Notice Banner */}
-        <div className="mb-10 p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-amber-950 flex items-start gap-3.5 text-xs sm:text-sm shadow-2xs">
-          <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
-          <div className="space-y-0.5 leading-relaxed">
-            <span className="font-extrabold">Frontend Prototype Notice:</span>{' '}
-            <span>This is a frontend demonstration. Demo appointments are simulated and are not stored in a database or sent to the real clinic desk.</span>
-          </div>
-        </div>
+
 
         {/* Confirmed Slip State vs Booking Form */}
         {confirmedBooking ? (

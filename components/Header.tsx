@@ -33,7 +33,6 @@ export function Header({ onNavigateToBooking }: HeaderProps) {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    setMobileMenuOpen(false);
     const element = document.getElementById(targetId);
     if (element) {
       const navHeight = 90;
@@ -43,6 +42,7 @@ export function Header({ onNavigateToBooking }: HeaderProps) {
         behavior: 'smooth',
       });
     }
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -100,19 +100,19 @@ export function Header({ onNavigateToBooking }: HeaderProps) {
             <a
               href="#home"
               onClick={(e) => handleNavClick(e, 'home')}
-              className="flex items-center gap-3.5 group shrink-0 focus-visible:outline-2 focus-visible:outline-teal-600 rounded-xl p-1"
+              className="flex items-center gap-2.5 sm:gap-3.5 group min-w-0 flex-1 sm:flex-initial focus-visible:outline-2 focus-visible:outline-teal-600 rounded-xl p-1"
               aria-label="Nalam Health Clinic Home"
             >
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-teal-700 via-teal-600 to-sky-600 p-[1px] shadow-sm group-hover:shadow transition-all duration-300">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-teal-700 via-teal-600 to-sky-600 p-[1px] shadow-sm group-hover:shadow transition-all duration-300 shrink-0">
                 <div className="w-full h-full bg-gradient-to-br from-teal-700 to-sky-800 rounded-xl flex items-center justify-center text-white">
-                  <HeartPulse className="w-6 h-6 group-hover:scale-110 transition-transform duration-200" />
+                  <HeartPulse className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform duration-200" />
                 </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800 transition-colors">
+              <div className="flex flex-col min-w-0">
+                <span className="text-base sm:text-lg lg:text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800 transition-colors truncate">
                   {CLINIC_INFO.name}
                 </span>
-                <span className="text-[11px] font-semibold text-slate-500 tracking-wide">
+                <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 tracking-wide truncate">
                   Jaffna · Northern Sri Lanka
                 </span>
               </div>
