@@ -1,5 +1,19 @@
 import type {Metadata} from 'next';
+import { Plus_Jakarta_Sans, Noto_Sans_Tamil } from 'next/font/google';
 import './globals.css'; // Global styles
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-plus-jakarta',
+});
+
+const notoSansTamil = Noto_Sans_Tamil({
+  subsets: ['tamil'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-noto-tamil',
+});
 
 export const metadata: Metadata = {
   title: 'Nalam Medical Clinic - Northern Sri Lanka (Jaffna)',
@@ -28,10 +42,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`${plusJakarta.variable} ${notoSansTamil.variable} scroll-smooth`}>
       <body className="antialiased text-slate-900 bg-white" suppressHydrationWarning>
         {children}
       </body>
     </html>
   );
 }
+
