@@ -23,7 +23,7 @@ export function PatientFaq() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="max-w-3xl mb-12">
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-700 mb-2.5">
             <HelpCircle className="w-4 h-4 text-teal-600" />
             <span>Patient FAQ</span>
@@ -37,7 +37,7 @@ export function PatientFaq() {
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 mb-10">
+        <div className="flex flex-wrap items-center justify-start gap-1.5 mb-10">
           {[
             { id: 'all', label: 'All Topics' },
             { id: 'appointments', label: 'Appointments' },
