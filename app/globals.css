@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 body, button, input, select, textarea, nav, a {
-  font-family: var(--font-plus-jakarta), var(--font-noto-tamil), 'Lohit Tamil', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-plus-jakarta), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: -0.011em;
 }
 

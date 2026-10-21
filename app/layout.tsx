@@ -1,18 +1,11 @@
 import type {Metadata} from 'next';
-import { Plus_Jakarta_Sans, Noto_Sans_Tamil } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css'; // Global styles
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-plus-jakarta',
-});
-
-const notoSansTamil = Noto_Sans_Tamil({
-  subsets: ['tamil'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-noto-tamil',
 });
 
 const siteUrl =
@@ -44,8 +37,6 @@ export const metadata: Metadata = {
     'Hospital Road Jaffna',
     'Doctor appointment Jaffna',
     'Healthcare Northern Sri Lanka',
-    'நலம் மருத்துவமனை',
-    'யாழ்ப்பாணம் மருத்துவர்',
   ],
   openGraph: {
     title: 'Nalam Medical Clinic - Northern Sri Lanka (Jaffna)',
@@ -75,7 +66,6 @@ const clinicStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'MedicalClinic',
   name: 'Nalam Health Clinic',
-  alternateName: 'நலம் மருத்துவமனை',
   description:
     'Modern, compassionate outpatient healthcare in Jaffna, Northern Sri Lanka, featuring bilingual English & Tamil consultations, specialist doctors, and diagnostic care.',
   url: siteUrl,
@@ -124,7 +114,7 @@ const clinicStructuredData = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className={`${plusJakarta.variable} ${notoSansTamil.variable} scroll-smooth`}>
+    <html lang="en" className={`${plusJakarta.variable} scroll-smooth`}>
       <head>
         <script
           type="application/ld+json"

@@ -375,6 +375,9 @@ export function AppointmentBooking({
                           }
                         }}
                         placeholder="e.g. S. Vijayaraj"
+                        aria-required="true"
+                        aria-invalid={!!errors.patientName}
+                        aria-describedby={errors.patientName ? 'patientName-error' : undefined}
                         className={`block w-full pl-10 pr-4 py-3 text-sm rounded-xl border ${
                           errors.patientName ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white'
                         } text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors shadow-2xs`}
@@ -382,8 +385,8 @@ export function AppointmentBooking({
                       />
                     </div>
                     {errors.patientName && (
-                      <p className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
-                        <AlertCircle className="w-3.5 h-3.5" />
+                      <p id="patientName-error" className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                         <span>{errors.patientName}</span>
                       </p>
                     )}
@@ -392,7 +395,7 @@ export function AppointmentBooking({
                   {/* Phone Number */}
                   <div>
                     <label htmlFor="phoneNumber" className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
-                      Phone Number <span className="text-rose-500">*</span>
+                      Phone Number <span className="text-rose-500" aria-hidden="true">*</span>
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -411,6 +414,9 @@ export function AppointmentBooking({
                           }
                         }}
                         placeholder="e.g. 077 123 4567 or +94 77 123 4567"
+                        aria-required="true"
+                        aria-invalid={!!errors.phoneNumber}
+                        aria-describedby={errors.phoneNumber ? 'phoneNumber-error' : 'phoneNumber-desc'}
                         className={`block w-full pl-10 pr-4 py-3 text-sm rounded-xl border ${
                           errors.phoneNumber ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white'
                         } text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors shadow-2xs`}
@@ -418,12 +424,12 @@ export function AppointmentBooking({
                       />
                     </div>
                     {errors.phoneNumber ? (
-                      <p className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
-                        <AlertCircle className="w-3.5 h-3.5" />
+                      <p id="phoneNumber-error" className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                         <span>{errors.phoneNumber}</span>
                       </p>
                     ) : (
-                      <p className="mt-1.5 text-[11px] text-slate-500">
+                      <p id="phoneNumber-desc" className="mt-1.5 text-[11px] text-slate-500">
                         Sri Lankan mobile format (e.g., 07X XXX XXXX)
                       </p>
                     )}
@@ -434,7 +440,7 @@ export function AppointmentBooking({
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label htmlFor="doctorSelect" className="block text-xs font-extrabold uppercase tracking-wider text-slate-700">
-                      Select Doctor & Specialty <span className="text-rose-500">*</span>
+                      Select Doctor & Specialty <span className="text-rose-500" aria-hidden="true">*</span>
                     </label>
                     <span className="text-[11px] text-teal-700 font-semibold hidden sm:inline">
                       4 Specialists available
@@ -457,7 +463,7 @@ export function AppointmentBooking({
                               setErrors((prev) => ({ ...prev, doctorId: '' }));
                             }
                           }}
-                          className={`p-2 rounded-2xl border text-left transition-all cursor-pointer flex items-center gap-2 ${
+                          className={`p-2 rounded-2xl border text-left transition-all cursor-pointer flex items-center gap-2 min-h-[48px] ${
                             isSelected
                               ? 'bg-teal-50 border-teal-500 ring-2 ring-teal-200 shadow-2xs'
                               : 'bg-slate-50 border-slate-200/80 hover:bg-white hover:border-slate-300'
@@ -473,12 +479,12 @@ export function AppointmentBooking({
                               referrerPolicy="no-referrer"
                             />
                           </div>
-                          <div className="min-w-0">
+                          <div className="min-w-0 flex-1">
                             <p className="text-[11px] font-bold text-slate-900 truncate leading-tight">
-                              {doc.name.split(' ')[1] || doc.name}
+                              {doc.name.replace(/^Dr\.\s*/, '')}
                             </p>
-                            <p className="text-[9px] text-teal-700 truncate font-semibold">
-                              {doc.specialization.split(' ')[0]}
+                            <p className="text-[9.5px] text-teal-700 truncate font-semibold leading-tight">
+                              {doc.specialization}
                             </p>
                           </div>
                         </button>
@@ -493,6 +499,9 @@ export function AppointmentBooking({
                     <select
                       id="doctorSelect"
                       value={selectedDoctorId}
+                      aria-required="true"
+                      aria-invalid={!!errors.doctorId}
+                      aria-describedby={errors.doctorId ? 'doctorId-error' : undefined}
                       onChange={(e) => {
                         onDoctorChange(e.target.value);
                         if (errors.doctorId) {
@@ -513,8 +522,8 @@ export function AppointmentBooking({
                     </select>
                   </div>
                   {errors.doctorId && (
-                    <p className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
-                      <AlertCircle className="w-3.5 h-3.5" />
+                    <p id="doctorId-error" className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                       <span>{errors.doctorId}</span>
                     </p>
                   )}
@@ -523,7 +532,7 @@ export function AppointmentBooking({
                 {/* Row 3: Appointment Date */}
                 <div>
                   <label htmlFor="appointmentDate" className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
-                    Appointment Date <span className="text-rose-500">*</span>
+                    Appointment Date <span className="text-rose-500" aria-hidden="true">*</span>
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -534,6 +543,9 @@ export function AppointmentBooking({
                       id="appointmentDate"
                       min={todayStr}
                       value={appointmentDate}
+                      aria-required="true"
+                      aria-invalid={!!errors.appointmentDate}
+                      aria-describedby={errors.appointmentDate ? 'appointmentDate-error' : undefined}
                       onChange={(e) => {
                         setAppointmentDate(e.target.value);
                         if (errors.appointmentDate) {
@@ -547,8 +559,8 @@ export function AppointmentBooking({
                     />
                   </div>
                   {errors.appointmentDate && (
-                    <p className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
-                      <AlertCircle className="w-3.5 h-3.5" />
+                    <p id="appointmentDate-error" className="mt-1.5 text-xs text-rose-600 flex items-center gap-1 font-medium">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                       <span>{errors.appointmentDate}</span>
                     </p>
                   )}
@@ -557,7 +569,7 @@ export function AppointmentBooking({
                 {/* Row 4: Available Time Slots */}
                 <div>
                   <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2.5">
-                    Preferred Time Slot <span className="text-rose-500">*</span>
+                    Preferred Time Slot <span className="text-rose-500" aria-hidden="true">*</span>
                   </label>
                   
                   {/* Morning Slots */}

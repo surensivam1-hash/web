@@ -39,6 +39,18 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [modalDoctor, setModalDoctor] = useState<Doctor | null>(null);
 
+  // Close modal on Escape key press
+  React.useEffect(() => {
+    if (!modalDoctor) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setModalDoctor(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalDoctor]);
+
   const setDoctorTab = (docId: string, tab: CardTab) => {
     setActiveTabs((prev) => ({ ...prev, [docId]: tab }));
   };
@@ -91,7 +103,7 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
           </div>
 
           {/* Specialty Filter Segmented Control */}
-          <div className="flex items-center gap-1.5 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200 self-start md:self-auto overflow-x-auto max-w-full shadow-2xs" role="tablist" aria-label="Specialty Filter">
+          <div className="flex items-center gap-1.5 p-1.5 pe-4 bg-slate-100/90 rounded-2xl border border-slate-200 self-start md:self-auto overflow-x-auto max-w-full shadow-2xs scrollbar-none" role="tablist" aria-label="Specialty Filter">
             {filterOptions.map((opt) => {
               const isSelected = selectedFilter === opt.id;
               return (
@@ -101,7 +113,7 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                   role="tab"
                   aria-selected={isSelected}
                   onClick={() => setSelectedFilter(opt.id)}
-                  className={`relative px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap z-10 ${
+                  className={`relative px-3.5 py-2 min-h-[38px] text-xs font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap z-10 shrink-0 ${
                     isSelected
                       ? 'text-slate-900 shadow-xs'
                       : 'text-slate-600 hover:text-slate-900'
@@ -158,11 +170,11 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                       <button
                         type="button"
                         onClick={() => setModalDoctor(doctor)}
-                        className="bg-slate-900/70 hover:bg-slate-900 backdrop-blur-md text-white p-1.5 rounded-full transition-colors cursor-pointer"
+                        className="bg-slate-900/70 hover:bg-slate-900 backdrop-blur-md text-white p-2 rounded-full transition-colors cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
                         title="View Full Profile"
                         aria-label={`View full profile of ${doctor.name}`}
                       >
-                        <ExternalLink className="w-3.5 h-3.5" />
+                        <ExternalLink className="w-4 h-4" />
                       </button>
                     </div>
 
@@ -190,7 +202,7 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                       </div>
                     </div>
 
-                    {/* Interactive Tab Switcher on Card */}
+                    {/* Interactive Tab Switcher on Card with ~44px touch target */}
                     <div className="relative flex items-center gap-1 p-1 bg-slate-100/80 rounded-xl border border-slate-200/70" role="tablist" aria-label={`${doctor.name} information tabs`}>
                       <button
                         type="button"
@@ -198,8 +210,9 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                         id={`tab-${doctor.id}-overview`}
                         aria-controls={`panel-${doctor.id}-overview`}
                         aria-selected={currentTab === 'overview'}
+                        aria-label={`View bio for ${doctor.name}`}
                         onClick={() => setDoctorTab(doctor.id, 'overview')}
-                        className={`relative flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 ${
+                        className={`relative flex-1 py-2.5 min-h-[42px] text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 flex items-center justify-center ${
                           currentTab === 'overview'
                             ? 'text-teal-900'
                             : 'text-slate-500 hover:text-slate-800'
@@ -220,8 +233,9 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                         id={`tab-${doctor.id}-qualifications`}
                         aria-controls={`panel-${doctor.id}-qualifications`}
                         aria-selected={currentTab === 'qualifications'}
+                        aria-label={`View degrees and qualifications for ${doctor.name}`}
                         onClick={() => setDoctorTab(doctor.id, 'qualifications')}
-                        className={`relative flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 ${
+                        className={`relative flex-1 py-2.5 min-h-[42px] text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 flex items-center justify-center ${
                           currentTab === 'qualifications'
                             ? 'text-teal-900'
                             : 'text-slate-500 hover:text-slate-800'
@@ -242,8 +256,9 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                         id={`tab-${doctor.id}-schedule`}
                         aria-controls={`panel-${doctor.id}-schedule`}
                         aria-selected={currentTab === 'schedule'}
+                        aria-label={`View consultation schedule for ${doctor.name}`}
                         onClick={() => setDoctorTab(doctor.id, 'schedule')}
-                        className={`relative flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 ${
+                        className={`relative flex-1 py-2.5 min-h-[42px] text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 flex items-center justify-center ${
                           currentTab === 'schedule'
                             ? 'text-teal-900'
                             : 'text-slate-500 hover:text-slate-800'
@@ -348,7 +363,14 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
       {/* Full Doctor Profile Modal */}
       <AnimatePresence>
         {modalDoctor && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
+          <div
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setModalDoctor(null);
+              }
+            }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs"
+          >
             <motion.div
               role="dialog"
               aria-modal="true"

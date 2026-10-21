@@ -247,7 +247,7 @@ export function Contact() {
                   <CheckCircle2 className="w-5 h-5 text-teal-600" />
                   <span>Inquiry Received</span>
                 </div>
-                <p className="text-xs leading-relaxed">
+                <p className="text-xs leading-relaxed text-teal-950">
                   Thank you! Your inquiry has been successfully validated. Please note that this is a frontend-only website, so your message has not been sent to the physical clinic. For immediate assistance, please call us directly or message via WhatsApp.
                 </p>
               </motion.div>
@@ -255,7 +255,7 @@ export function Contact() {
               <form onSubmit={handleInquirySubmit} className="space-y-4" noValidate>
                 <div>
                   <label htmlFor="inquiryName" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Your Name <span className="text-rose-500">*</span>
+                    Your Name <span className="text-rose-500" aria-hidden="true">*</span>
                   </label>
                   <input
                     type="text"
@@ -265,6 +265,7 @@ export function Contact() {
                     value={inquiryName}
                     onChange={(e) => setInquiryName(e.target.value)}
                     required
+                    aria-required="true"
                     placeholder="e.g. S. Mathivanan"
                     className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-2xs"
                   />
@@ -272,7 +273,7 @@ export function Contact() {
 
                 <div>
                   <label htmlFor="inquiryPhone" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Phone Number <span className="text-rose-500">*</span>
+                    Phone Number <span className="text-rose-500" aria-hidden="true">*</span>
                   </label>
                   <input
                     type="tel"
@@ -281,6 +282,9 @@ export function Contact() {
                     name="inquiryPhone"
                     autoComplete="tel"
                     value={inquiryPhone}
+                    aria-required="true"
+                    aria-invalid={!!inquiryPhoneError}
+                    aria-describedby={inquiryPhoneError ? 'inquiryPhone-error' : undefined}
                     onChange={(e) => {
                       setInquiryPhone(e.target.value);
                       if (inquiryPhoneError) {
@@ -297,7 +301,7 @@ export function Contact() {
                     } text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-2xs`}
                   />
                   {inquiryPhoneError && (
-                    <p className="mt-1.5 text-xs text-rose-600 font-medium">
+                    <p id="inquiryPhone-error" className="mt-1.5 text-xs text-rose-600 font-medium">
                       {inquiryPhoneError}
                     </p>
                   )}
