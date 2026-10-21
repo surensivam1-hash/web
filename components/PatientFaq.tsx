@@ -20,7 +20,7 @@ export function PatientFaq() {
 
   return (
     <section id="faq" className="py-20 lg:py-28 bg-white border-t border-slate-200/80">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="max-w-3xl mb-12">
@@ -37,7 +37,7 @@ export function PatientFaq() {
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center justify-start gap-1.5 mb-10" role="tablist" aria-label="FAQ Topics">
+        <div className="flex flex-wrap items-center justify-start gap-1.5 mb-10 max-w-4xl" role="tablist" aria-label="FAQ Topics">
           {[
             { id: 'all', label: 'All Topics' },
             { id: 'appointments', label: 'Appointments' },
@@ -63,7 +63,7 @@ export function PatientFaq() {
         </div>
 
         {/* Accordion List */}
-        <div className="space-y-3.5">
+        <div className="space-y-3.5 max-w-4xl">
           {filteredFaqs.map((faq) => {
             const isOpen = openFaqId === faq.id;
 
