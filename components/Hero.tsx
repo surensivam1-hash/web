@@ -117,8 +117,9 @@ export function Hero({ onBookClick, onExploreServicesClick }: HeroProps) {
                 alt="Nalam Medical Clinic consultation in Jaffna with compassionate doctor and family"
                 fill
                 priority
+                quality={85}
                 className="object-cover group-hover:scale-102 transition-transform duration-700"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+                sizes="(max-width: 640px) 92vw, (max-width: 1024px) 480px, 490px"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/15 to-transparent pointer-events-none" />

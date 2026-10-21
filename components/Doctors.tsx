@@ -154,8 +154,9 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                       src={doctor.photoUrl}
                       alt={`Portrait of ${doctor.name}, ${doctor.specialization}`}
                       fill
+                      quality={80}
                       className="object-cover group-hover:scale-104 transition-transform duration-700 ease-out"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                      sizes="(max-width: 640px) 92vw, (max-width: 1024px) 45vw, 270px"
                       referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/25 to-transparent opacity-95" />
