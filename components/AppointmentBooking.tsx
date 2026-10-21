@@ -147,7 +147,7 @@ export function AppointmentBooking({
     if (!confirmedBooking) return;
     const content = generateIcsCalendarContent({
       title: `Clinic Consultation with ${confirmedBooking.doctor.name}`,
-      description: `Appointment reference: ${confirmedBooking.referenceId}. Appointment at Nalam Health Clinic Jaffna. Patient: ${confirmedBooking.patientName}. Contact: ${CLINIC_INFO.phonePrimary}. Note: Frontend prototype.`,
+      description: `Appointment reference: ${confirmedBooking.referenceId}. Appointment at Nalam Health Clinic Jaffna. Patient: ${confirmedBooking.patientName}. Contact: ${CLINIC_INFO.phonePrimary}.`,
       location: CLINIC_INFO.address,
       dateStr: confirmedBooking.appointmentDate,
       timeSlotStr: confirmedBooking.timeSlot,
@@ -182,18 +182,8 @@ export function AppointmentBooking({
             Schedule Your Clinic Visit
           </h2>
           <p className="mt-3 text-base sm:text-lg text-slate-600">
-            Select your preferred doctor, date, and convenient consultation slot. Instant demonstration confirmation provided.
+            Select your preferred doctor, date, and convenient consultation slot. Instant appointment confirmation provided.
           </p>
-        </div>
-
-        {/* Frontend Prototype Notice Banner */}
-        <div className="mb-10 px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl bg-sky-50/90 border border-sky-200 shadow-2xs flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center shrink-0">
-            <ShieldCheck className="w-5 h-5" />
-          </div>
-          <div className="text-xs sm:text-sm text-slate-700 leading-normal">
-            <span className="font-bold text-slate-900">Frontend Prototype Notice:</span> This is a demonstration interface for Nalam Health Clinic in Jaffna. Appointment bookings are simulated for review and testing purposes.
-          </div>
         </div>
 
 
@@ -299,14 +289,6 @@ export function AppointmentBooking({
                   </p>
                 </div>
               )}
-            </div>
-
-            {/* Prototype Reminder */}
-            <div className="my-6 p-4 rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 text-xs sm:text-sm flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-sky-700 shrink-0 mt-0.5" />
-              <p className="leading-relaxed">
-                Remember: This is a frontend-only prototype website without a backend database. Your appointment form has been successfully validated, but the request has not been sent to the physical clinic. Please contact the clinic directly via phone or WhatsApp for real clinical visits.
-              </p>
             </div>
 
             {/* Actions */}

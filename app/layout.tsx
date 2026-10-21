@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Nalam Medical Clinic - Northern Sri Lanka (Jaffna)',
-    description: 'Trusted healthcare for your family in Jaffna. Qualified Tamil doctor profiles, outpatient services, and instant demonstration appointments.',
+    description: 'Trusted healthcare for your family in Jaffna. Qualified Tamil doctor profiles, outpatient services, and instant appointment bookings.',
     url: '/',
     siteName: 'Nalam Health Clinic',
     locale: 'en_LK',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Nalam Medical Clinic - Northern Sri Lanka (Jaffna)',
-    description: 'Trusted healthcare for your family in Jaffna. Qualified Tamil doctor profiles, outpatient services, and instant demonstration appointments.',
+    description: 'Trusted healthcare for your family in Jaffna. Qualified Tamil doctor profiles, outpatient services, and instant appointment bookings.',
     images: ['/images/hero_clinic.jpg'],
   },
 };

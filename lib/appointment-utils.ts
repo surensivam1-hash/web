@@ -84,7 +84,7 @@ export function getTodayDateString(): string {
 }
 
 /**
- * Generates an authentic appointment reference ID for the clinic demonstration.
+ * Generates an authentic appointment reference ID for clinic scheduling.
  * Format: NLM-YYYY-XXXX (e.g. NLM-2026-8492)
  */
 export function generateBookingReference(prefix: string = 'NLM'): string {

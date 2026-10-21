@@ -119,7 +119,7 @@ export function Footer({ onNavigateToSection }: FooterProps) {
           </p>
 
           <p className="text-center md:text-right max-w-xl text-[11px] text-slate-500 leading-normal">
-            This web prototype demonstrates a modern medical clinic interface for Northern Sri Lanka. Medical information provided here is for general health literacy and informational purposes only.
+            Nalam Health Clinic provides professional outpatient healthcare services in Northern Sri Lanka. Medical information provided here is for general health literacy and informational purposes only.
           </p>
         </div>
 
