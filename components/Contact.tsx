@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { CLINIC_INFO } from '@/lib/data';
+import { validatePhoneNumber } from '@/lib/appointment-utils';
 import {
   MapPin,
   Phone,
@@ -23,17 +24,27 @@ export function Contact() {
   const [inquiryName, setInquiryName] = useState('');
   const [inquiryPhone, setInquiryPhone] = useState('');
   const [inquiryText, setInquiryText] = useState('');
+  const [inquiryPhoneError, setInquiryPhoneError] = useState('');
   const [inquirySent, setInquirySent] = useState(false);
 
   const handleInquirySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inquiryName.trim() || !inquiryPhone.trim()) return;
+    if (!inquiryName.trim()) return;
+
+    const phoneVal = validatePhoneNumber(inquiryPhone);
+    if (!phoneVal.isValid) {
+      setInquiryPhoneError(phoneVal.errorMessage || 'Please provide a valid phone number.');
+      return;
+    }
+
+    setInquiryPhoneError('');
     setInquirySent(true);
     setTimeout(() => {
       setInquirySent(false);
       setInquiryName('');
       setInquiryPhone('');
       setInquiryText('');
+      setInquiryPhoneError('');
     }, 4000);
   };
 
@@ -196,15 +207,15 @@ export function Contact() {
               <div className="divide-y divide-slate-200/80 text-sm">
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-slate-600">Monday – Friday</span>
-                  <span className="font-bold text-slate-900 font-mono">7:30 AM – 8:00 PM</span>
+                  <span className="font-bold text-slate-900 font-mono">{hours.weekdays.split(':')[1]?.trim() || '7:30 AM – 8:00 PM'}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-slate-600">Saturday</span>
-                  <span className="font-bold text-slate-900 font-mono">7:30 AM – 6:30 PM</span>
+                  <span className="font-bold text-slate-900 font-mono">{hours.saturday.split(':')[1]?.trim() || '7:30 AM – 6:30 PM'}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
                   <span className="text-slate-600">Sunday</span>
-                  <span className="font-bold text-slate-900 font-mono">8:00 AM – 1:00 PM</span>
+                  <span className="font-bold text-slate-900 font-mono">{hours.sunday.split(':')[1]?.trim() || '8:00 AM – 1:00 PM'}</span>
                 </div>
               </div>
 
@@ -215,7 +226,7 @@ export function Contact() {
 
           </div>
 
-          {/* Right Column: Quick Inquiry Demo Box */}
+          {/* Right Column: Quick Inquiry Box */}
           <div className="lg:col-span-5 bg-slate-50/80 rounded-3xl border border-slate-200/80 p-6 sm:p-8 space-y-5">
             <div>
               <h4 className="text-base font-extrabold text-slate-900">
@@ -234,17 +245,17 @@ export function Contact() {
               >
                 <div className="flex items-center gap-2 font-bold text-sm">
                   <CheckCircle2 className="w-5 h-5 text-teal-600" />
-                  <span>Inquiry Received (Demo)</span>
+                  <span>Inquiry Received</span>
                 </div>
                 <p className="text-xs leading-relaxed">
-                  Thank you! In this demo prototype, your simulated message was received. For real assistance, please use WhatsApp or phone.
+                  Thank you! Your inquiry has been successfully validated. Please note that this is a frontend-only website, so your message has not been sent to the physical clinic. For immediate assistance, please call us directly or message via WhatsApp.
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleInquirySubmit} className="space-y-4">
+              <form onSubmit={handleInquirySubmit} className="space-y-4" noValidate>
                 <div>
                   <label htmlFor="inquiryName" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Your Name
+                    Your Name <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -259,17 +270,33 @@ export function Contact() {
 
                 <div>
                   <label htmlFor="inquiryPhone" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Phone Number
+                    Phone Number <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="tel"
+                    inputMode="tel"
                     id="inquiryPhone"
                     value={inquiryPhone}
-                    onChange={(e) => setInquiryPhone(e.target.value)}
+                    onChange={(e) => {
+                      setInquiryPhone(e.target.value);
+                      if (inquiryPhoneError) {
+                        const val = validatePhoneNumber(e.target.value);
+                        if (val.isValid) {
+                          setInquiryPhoneError('');
+                        }
+                      }
+                    }}
                     required
-                    placeholder="e.g. 077 123 4567"
-                    className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-2xs"
+                    placeholder="e.g. 077 123 4567 or +94 77 123 4567"
+                    className={`w-full px-3.5 py-2.5 text-sm rounded-xl border ${
+                      inquiryPhoneError ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white'
+                    } text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-2xs`}
                   />
+                  {inquiryPhoneError && (
+                    <p className="mt-1.5 text-xs text-rose-600 font-medium">
+                      {inquiryPhoneError}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -292,7 +319,7 @@ export function Contact() {
                   className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-xs font-bold uppercase tracking-wider text-white bg-slate-900 hover:bg-slate-800 rounded-xl shadow-xs transition-colors cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5" />
-                  <span>Send Demo Message</span>
+                  <span>Send Message</span>
                 </motion.button>
               </form>
             )}

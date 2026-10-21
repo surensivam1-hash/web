@@ -2,14 +2,13 @@
 
 import React from 'react';
 import { CLINIC_INFO } from '@/lib/data';
-import { HeartPulse, Phone, MapPin, Clock, MessageCircle, Sliders, ShieldCheck } from 'lucide-react';
+import { HeartPulse, Phone, MapPin, Clock, MessageCircle, ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
-  onOpenCustomizationGuide: () => void;
   onNavigateToSection: (sectionId: string) => void;
 }
 
-export function Footer({ onOpenCustomizationGuide, onNavigateToSection }: FooterProps) {
+export function Footer({ onNavigateToSection }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -38,17 +37,6 @@ export function Footer({ onOpenCustomizationGuide, onNavigateToSection }: Footer
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
               Caring for families across Jaffna and Northern Sri Lanka with professional bilingual medical services.
             </p>
-
-            <div className="pt-2 flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={onOpenCustomizationGuide}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-teal-300 bg-teal-950/80 border border-teal-800 hover:bg-teal-900 rounded-lg transition-colors cursor-pointer"
-              >
-                <Sliders className="w-3.5 h-3.5" />
-                <span>Developer Customization & Deployment Guide</span>
-              </button>
-            </div>
           </div>
 
           {/* Col 2: Navigation Links */}

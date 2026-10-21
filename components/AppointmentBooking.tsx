@@ -146,8 +146,8 @@ export function AppointmentBooking({
   const handleDownloadCalendar = () => {
     if (!confirmedBooking) return;
     const content = generateIcsCalendarContent({
-      title: `Clinic Consultation with ${confirmedBooking.doctor.name} (Demo)`,
-      description: `Appointment reference: ${confirmedBooking.referenceId}. Demo booking at Nalam Health Clinic Jaffna. Patient: ${confirmedBooking.patientName}. Contact: ${CLINIC_INFO.phonePrimary}. Note: Simulated demonstration.`,
+      title: `Clinic Consultation with ${confirmedBooking.doctor.name}`,
+      description: `Appointment reference: ${confirmedBooking.referenceId}. Appointment at Nalam Health Clinic Jaffna. Patient: ${confirmedBooking.patientName}. Contact: ${CLINIC_INFO.phonePrimary}. Note: Frontend prototype.`,
       location: CLINIC_INFO.address,
       dateStr: confirmedBooking.appointmentDate,
       timeSlotStr: confirmedBooking.timeSlot,
@@ -205,10 +205,10 @@ export function AppointmentBooking({
                 </div>
                 <div>
                   <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                    Appointment Request Submitted (Demo)
+                    Appointment Request Submitted
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                    Here is your demonstration consultation slip. Please review your details below.
+                    Here is your consultation slip. Please review your details below.
                   </p>
                 </div>
               </div>
@@ -295,7 +295,7 @@ export function AppointmentBooking({
             <div className="my-6 p-4 rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 text-xs sm:text-sm flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-sky-700 shrink-0 mt-0.5" />
               <p className="leading-relaxed">
-                Remember: This is a prototype preview. No real appointment has been recorded with a physical clinic. Please contact the clinic directly via phone or WhatsApp for real clinical visits.
+                Remember: This is a frontend-only prototype website without a backend database. Your appointment form has been successfully validated, but the request has not been sent to the physical clinic. Please contact the clinic directly via phone or WhatsApp for real clinical visits.
               </p>
             </div>
 
@@ -652,7 +652,7 @@ export function AppointmentBooking({
                     ) : (
                       <>
                         <Calendar className="w-5 h-5" />
-                        <span>Confirm Demo Appointment</span>
+                        <span>Confirm Appointment</span>
                       </>
                     )}
                   </motion.button>

@@ -12,12 +12,10 @@ import { AppointmentBooking } from '@/components/AppointmentBooking';
 import { PatientFaq } from '@/components/PatientFaq';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
-import { CustomizationModal } from '@/components/CustomizationModal';
 
 export default function Home() {
   const [selectedDoctorId, setSelectedDoctorId] = useState<string>(DOCTORS_DATA[0]?.id || '');
   const [prefillMessage, setPrefillMessage] = useState<string>('');
-  const [customizationModalOpen, setCustomizationModalOpen] = useState<boolean>(false);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -87,14 +85,7 @@ export default function Home() {
 
       {/* 10. Footer */}
       <Footer
-        onOpenCustomizationGuide={() => setCustomizationModalOpen(true)}
         onNavigateToSection={scrollToSection}
-      />
-
-      {/* 11. Customization & Deployment Guide Modal */}
-      <CustomizationModal
-        isOpen={customizationModalOpen}
-        onClose={() => setCustomizationModalOpen(false)}
       />
     </div>
   );
