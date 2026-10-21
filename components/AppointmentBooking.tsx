@@ -22,12 +22,12 @@ import {
   Download,
   Printer,
   RotateCcw,
-
   Loader2,
   Stethoscope,
   Sparkles,
   Check,
   Copy,
+  ShieldCheck,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -173,7 +173,7 @@ export function AppointmentBooking({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-10">
+        <div className="max-w-3xl mb-8">
           <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-700 mb-2.5">
             <span className="w-2 h-2 rounded-full bg-teal-600" />
             <span>Online Appointment</span>
@@ -184,6 +184,16 @@ export function AppointmentBooking({
           <p className="mt-3 text-base sm:text-lg text-slate-600">
             Select your preferred doctor, date, and convenient consultation slot. Instant demonstration confirmation provided.
           </p>
+        </div>
+
+        {/* Frontend Prototype Notice Banner */}
+        <div className="mb-10 px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl bg-sky-50/90 border border-sky-200 shadow-2xs flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center shrink-0">
+            <ShieldCheck className="w-5 h-5" />
+          </div>
+          <div className="text-xs sm:text-sm text-slate-700 leading-normal">
+            <span className="font-bold text-slate-900">Frontend Prototype Notice:</span> This is a demonstration interface for Nalam Health Clinic in Jaffna. Appointment bookings are simulated for review and testing purposes.
+          </div>
         </div>
 
 
@@ -355,6 +365,8 @@ export function AppointmentBooking({
                       <input
                         type="text"
                         id="patientName"
+                        name="patientName"
+                        autoComplete="name"
                         value={patientName}
                         onChange={(e) => {
                           setPatientName(e.target.value);
@@ -389,6 +401,8 @@ export function AppointmentBooking({
                       <input
                         type="tel"
                         id="phoneNumber"
+                        name="phoneNumber"
+                        autoComplete="tel"
                         value={phoneNumber}
                         onChange={(e) => {
                           setPhoneNumber(e.target.value);
@@ -428,13 +442,15 @@ export function AppointmentBooking({
                   </div>
 
                   {/* Visual Doctor Quick Select Tiles */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3" role="group" aria-label="Quick Doctor Select">
                     {DOCTORS_DATA.map((doc) => {
                       const isSelected = selectedDoctorId === doc.id;
                       return (
                         <button
                           key={doc.id}
                           type="button"
+                          aria-label={`Select ${doc.name}, ${doc.specialization}`}
+                          aria-pressed={isSelected}
                           onClick={() => {
                             onDoctorChange(doc.id);
                             if (errors.doctorId) {
@@ -550,13 +566,15 @@ export function AppointmentBooking({
                       <Clock className="w-3.5 h-3.5 text-teal-600" />
                       <span>Morning Sessions</span>
                     </p>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" role="group" aria-label="Morning Time Slots">
                       {AVAILABLE_SLOTS.filter((s) => s.period === 'morning').map((slot) => {
                         const isSelected = selectedSlot === slot.id;
                         return (
                           <button
                             key={slot.id}
                             type="button"
+                            aria-label={`${slot.time} morning consultation slot`}
+                            aria-pressed={isSelected}
                             onClick={() => {
                               setSelectedSlot(slot.id);
                               if (errors.slot) {
@@ -582,13 +600,15 @@ export function AppointmentBooking({
                       <Clock className="w-3.5 h-3.5 text-sky-600" />
                       <span>Evening Sessions</span>
                     </p>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" role="group" aria-label="Evening Time Slots">
                       {AVAILABLE_SLOTS.filter((s) => s.period === 'evening').map((slot) => {
                         const isSelected = selectedSlot === slot.id;
                         return (
                           <button
                             key={slot.id}
                             type="button"
+                            aria-label={`${slot.time} evening consultation slot`}
+                            aria-pressed={isSelected}
                             onClick={() => {
                               setSelectedSlot(slot.id);
                               if (errors.slot) {

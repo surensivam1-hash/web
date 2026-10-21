@@ -91,13 +91,15 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
           </div>
 
           {/* Specialty Filter Segmented Control */}
-          <div className="flex items-center gap-1.5 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200 self-start md:self-auto overflow-x-auto max-w-full shadow-2xs">
+          <div className="flex items-center gap-1.5 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200 self-start md:self-auto overflow-x-auto max-w-full shadow-2xs" role="tablist" aria-label="Specialty Filter">
             {filterOptions.map((opt) => {
               const isSelected = selectedFilter === opt.id;
               return (
                 <button
                   key={opt.id}
                   type="button"
+                  role="tab"
+                  aria-selected={isSelected}
                   onClick={() => setSelectedFilter(opt.id)}
                   className={`relative px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap z-10 ${
                     isSelected
@@ -189,9 +191,13 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                     </div>
 
                     {/* Interactive Tab Switcher on Card */}
-                    <div className="relative flex items-center gap-1 p-1 bg-slate-100/80 rounded-xl border border-slate-200/70">
+                    <div className="relative flex items-center gap-1 p-1 bg-slate-100/80 rounded-xl border border-slate-200/70" role="tablist" aria-label={`${doctor.name} information tabs`}>
                       <button
                         type="button"
+                        role="tab"
+                        id={`tab-${doctor.id}-overview`}
+                        aria-controls={`panel-${doctor.id}-overview`}
+                        aria-selected={currentTab === 'overview'}
                         onClick={() => setDoctorTab(doctor.id, 'overview')}
                         className={`relative flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 ${
                           currentTab === 'overview'
@@ -210,6 +216,10 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                       </button>
                       <button
                         type="button"
+                        role="tab"
+                        id={`tab-${doctor.id}-qualifications`}
+                        aria-controls={`panel-${doctor.id}-qualifications`}
+                        aria-selected={currentTab === 'qualifications'}
                         onClick={() => setDoctorTab(doctor.id, 'qualifications')}
                         className={`relative flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 ${
                           currentTab === 'qualifications'
@@ -228,6 +238,10 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                       </button>
                       <button
                         type="button"
+                        role="tab"
+                        id={`tab-${doctor.id}-schedule`}
+                        aria-controls={`panel-${doctor.id}-schedule`}
+                        aria-selected={currentTab === 'schedule'}
                         onClick={() => setDoctorTab(doctor.id, 'schedule')}
                         className={`relative flex-1 py-1 text-[11px] font-bold rounded-lg transition-colors cursor-pointer text-center z-10 ${
                           currentTab === 'schedule'
@@ -247,7 +261,12 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                     </div>
 
                     {/* Tab Panes */}
-                    <div className="min-h-[96px] text-xs">
+                    <div
+                      id={`panel-${doctor.id}-${currentTab}`}
+                      role="tabpanel"
+                      aria-labelledby={`tab-${doctor.id}-${currentTab}`}
+                      className="min-h-[96px] text-xs"
+                    >
                       {currentTab === 'overview' && (
                         <div className="animate-in fade-in-50 duration-200">
                           <p className="text-slate-600 leading-relaxed line-clamp-4">
@@ -331,6 +350,9 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
         {modalDoctor && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
             <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-doctor-title"
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
@@ -362,7 +384,7 @@ export function Doctors({ onSelectDoctor }: DoctorsProps) {
                     <UserCheck className="w-3 h-3 text-teal-600" />
                     <span>Northern Sri Lanka Consultant</span>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900">
+                  <h3 id="modal-doctor-title" className="text-xl font-bold text-slate-900">
                     {modalDoctor.name}
                   </h3>
                   <p className="text-sm font-semibold text-teal-700">

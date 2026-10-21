@@ -37,7 +37,7 @@ export function PatientFaq() {
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center justify-start gap-1.5 mb-10">
+        <div className="flex flex-wrap items-center justify-start gap-1.5 mb-10" role="tablist" aria-label="FAQ Topics">
           {[
             { id: 'all', label: 'All Topics' },
             { id: 'appointments', label: 'Appointments' },
@@ -48,6 +48,8 @@ export function PatientFaq() {
             <button
               key={cat.id}
               type="button"
+              role="tab"
+              aria-selected={activeCategory === cat.id}
               onClick={() => setActiveCategory(cat.id)}
               className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer ${
                 activeCategory === cat.id
@@ -72,9 +74,11 @@ export function PatientFaq() {
               >
                 <button
                   type="button"
+                  id={`faq-btn-${faq.id}`}
                   onClick={() => toggleFaq(faq.id)}
                   className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer focus-visible:outline-2 focus-visible:outline-teal-600"
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${faq.id}`}
                 >
                   <span className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
                     {faq.question}
@@ -91,6 +95,9 @@ export function PatientFaq() {
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
+                      id={`faq-answer-${faq.id}`}
+                      role="region"
+                      aria-labelledby={`faq-btn-${faq.id}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}

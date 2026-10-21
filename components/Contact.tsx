@@ -260,6 +260,8 @@ export function Contact() {
                   <input
                     type="text"
                     id="inquiryName"
+                    name="inquiryName"
+                    autoComplete="name"
                     value={inquiryName}
                     onChange={(e) => setInquiryName(e.target.value)}
                     required
@@ -276,6 +278,8 @@ export function Contact() {
                     type="tel"
                     inputMode="tel"
                     id="inquiryPhone"
+                    name="inquiryPhone"
+                    autoComplete="tel"
                     value={inquiryPhone}
                     onChange={(e) => {
                       setInquiryPhone(e.target.value);
@@ -305,6 +309,7 @@ export function Contact() {
                   </label>
                   <textarea
                     id="inquiryText"
+                    name="inquiryText"
                     rows={3}
                     value={inquiryText}
                     onChange={(e) => setInquiryText(e.target.value)}

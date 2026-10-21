@@ -165,8 +165,9 @@ export function Header({ onNavigateToBooking }: HeaderProps) {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden inline-flex items-center justify-center p-2 rounded-xl text-slate-700 hover:text-teal-800 hover:bg-slate-100 transition-colors focus-visible:outline-2 focus-visible:outline-teal-600"
+                className="lg:hidden inline-flex items-center justify-center p-2 rounded-xl text-slate-700 hover:text-teal-800 hover:bg-slate-100 transition-colors focus-visible:outline-2 focus-visible:outline-teal-600 cursor-pointer"
                 aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-nav-menu"
                 aria-label="Toggle navigation menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -178,6 +179,7 @@ export function Header({ onNavigateToBooking }: HeaderProps) {
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div
+                id="mobile-nav-menu"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
