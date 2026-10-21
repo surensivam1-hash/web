@@ -12,6 +12,7 @@ import { AppointmentBooking } from '@/components/AppointmentBooking';
 import { PatientFaq } from '@/components/PatientFaq';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
+import { BackToTop } from '@/components/BackToTop';
 
 export default function Home() {
   const [selectedDoctorId, setSelectedDoctorId] = useState<string>(DOCTORS_DATA[0]?.id || '');
@@ -34,7 +35,26 @@ export default function Home() {
     scrollToSection('appointment');
   };
 
-  const handleBookService = (serviceName: string) => {
+  const getDoctorIdForService = (serviceId: string): string => {
+    switch (serviceId) {
+      case 'general-family-medicine':
+      case 'elderly-preventive-care':
+        return 'dr-kandeepan';
+      case 'cardiology-chronic-care':
+      case 'diagnostic-lab-ecg':
+        return 'dr-tharmarajah';
+      case 'pediatrics-child-health':
+        return 'dr-priya';
+      case 'womens-health-maternity':
+        return 'dr-ananya';
+      default:
+        return 'dr-kandeepan';
+    }
+  };
+
+  const handleBookService = (serviceId: string, serviceName: string) => {
+    const docId = getDoctorIdForService(serviceId);
+    setSelectedDoctorId(docId);
     setPrefillMessage(`Interested in: ${serviceName} consultation`);
     scrollToSection('appointment');
   };
@@ -87,6 +107,9 @@ export default function Home() {
       <Footer
         onNavigateToSection={scrollToSection}
       />
+
+      {/* Floating Back to Top Button */}
+      <BackToTop />
     </div>
   );
 }

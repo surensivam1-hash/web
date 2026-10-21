@@ -113,7 +113,7 @@ export function Footer({ onNavigateToSection }: FooterProps) {
         </div>
 
         {/* Bottom Bar: Copyright & Medical Disclaimer */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 pb-6 border-b border-slate-800">
           <p>
             &copy; {year} {CLINIC_INFO.name}. All rights reserved.
           </p>
@@ -121,6 +121,11 @@ export function Footer({ onNavigateToSection }: FooterProps) {
           <p className="text-center md:text-right max-w-xl text-[11px] text-slate-500 leading-normal">
             This web prototype demonstrates a modern medical clinic interface for Northern Sri Lanka. Medical information provided here is for general health literacy and informational purposes only.
           </p>
+        </div>
+
+        {/* Developer Credit */}
+        <div className="pt-6 text-center text-xs text-slate-500">
+          Developed by EdGrow Tech (PVT) LTD
         </div>
 
       </div>

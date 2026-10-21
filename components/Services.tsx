@@ -17,7 +17,7 @@ import {
 import { motion } from 'motion/react';
 
 interface ServicesProps {
-  onBookService: (serviceName: string) => void;
+  onBookService: (serviceId: string, serviceTitle: string) => void;
 }
 
 export function Services({ onBookService }: ServicesProps) {
@@ -131,7 +131,7 @@ export function Services({ onBookService }: ServicesProps) {
                 {/* Card Action */}
                 <button
                   type="button"
-                  onClick={() => onBookService(service.title)}
+                  onClick={() => onBookService(service.id, service.title)}
                   className="inline-flex items-center justify-between w-full pt-4 border-t border-slate-100 text-xs font-bold text-teal-700 group-hover:text-teal-900 cursor-pointer"
                   aria-label={`Book appointment for ${service.title}`}
                 >
